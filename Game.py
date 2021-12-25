@@ -1,5 +1,4 @@
 import random
-
 import pygame as pg
 from button import Button
 import time
@@ -18,34 +17,27 @@ def run():
 
     gamerun = True
     but = Button(screen)
-    k = True
 
     while gamerun:
         pg.display.update()
         for event in pg.event.get():
-            if event.type == pg.QUIT:
+            if event.type == pg.QUIT: #выход
                 gamerun = False
-            if k:
+            if but.rg: #запускаем 5 точек
+                but.rgp = 0
                 time.sleep(random.randint(1, 5))
-                start = time.time()
                 but.draw()
                 pg.display.update()
-                k = False
-            if event.type == pg.MOUSEBUTTONDOWN and (pg.mouse.get_pos()[0] - but.posold[0])**2 + (pg.mouse.get_pos()[1] - but.posold[1])**2 <= 1225:
-                print("Nice:", int(1000*(time.time() - start)), "ms")
-                pg.draw.circle(screen, green, but.posold, 35)
-                pg.display.update()
-                time.sleep(1)
-                pg.draw.circle(screen, black, but.posold, 35)
-                pg.display.update()
-                k = True
-            elif event.type == pg.MOUSEBUTTONDOWN and (pg.mouse.get_pos()[0] - but.posold[0])**2 + (pg.mouse.get_pos()[1] - but.posold[1])**2 > 1225:
-                print("Lose")
-                pg.draw.circle(screen, red, but.posold, 35)
-                pg.display.update()
-                time.sleep(1)
-                pg.draw.circle(screen, black, but.posold, 35)
-                pg.display.update()
-                k = True
+                but.rg = False
+            if but.rg == False and event.type == pg.MOUSEBUTTONDOWN: #узнаем по каким попали и сколько раз нажали
+                    but.exam(screen)
+                    but.rgp += 1
+            if but.rgp == 5: #как только нажали 5 раз, красим в красный оставшийся и выводим время, чутка ждем и очищаем
+                    but.rg = True
+                    but.colred(screen)
+                    but.times()
+                    time.sleep(3)
+                    but.kill(screen)
+
 
 run()
