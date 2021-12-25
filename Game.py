@@ -39,5 +39,4 @@ def run():
                     time.sleep(3)
                     but.kill(screen)
 
-
 run()
