@@ -1,6 +1,5 @@
 import pygame as pg
 from button import Button
-from move import Move
 from controls import Events
 
 
@@ -15,13 +14,14 @@ def run():
     screen.fill(black)
     pg.display.set_caption("Проверка реакции")
     pg.display.update()
-    pg.draw.rect(screen, white, (0, 0, 640, 360), 1)
+    butnum = 5
+    font = pg.font.SysFont('microsofttaile', 32)
     but = Button(screen)
 
     while True:
         pg.display.update()
-        Events(screen, but)
-        but.update()
+        Events(screen, but, butnum, font)
+        but.update(screen, butnum)
 
 
 run()
