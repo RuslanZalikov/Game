@@ -7,7 +7,7 @@ black = (0, 0, 0)
 red = (255, 0, 0)
 green = (0, 255, 0)
 
-class Button:
+class ButtonPG:
     def __init__(self, screen):
         self.screen = screen
         self.screen_rect = screen.get_rect()
@@ -79,13 +79,18 @@ class Button:
     def times(self, screen, font): #вывод времени
         if False in self.flag:
             text = font.render("Lose: " + str(int(1000 * self.time)) + "ms", 1, white)
+            pg.display.update()
             print("Lose: ", int(1000 * self.time), "ms")
         else:
             text = font.render("Nice: " + str(int(1000 * self.time)) + "ms", 1, white)
+            pg.display.update()
             print("Nice: ", int(1000 * self.time), "ms")
         if self.y >= 530:
             self.x += 175
             self.y = 380
+        if self.x > 190:
+            self.x = 15
+            self.screen.fill(black)
         screen.blit(text, (self.x, self.y))
         self.y += 34
     def update(self, screen, butnum): #обновление движения
