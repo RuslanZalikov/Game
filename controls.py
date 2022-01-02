@@ -8,16 +8,16 @@ def Events(screen, but, butnum, font):
             sys.exit()
         if but.rg:  # запускаем 5 точек
             but.rgp = 0
-            time.sleep(random.randint(1, 5))
-            but.draw(butnum)
+            pg.time.delay(random.randint(1, 2))
+            but.draw(butnum) #speed = 2n
             pg.display.update()
             but.rg = False
         if but.rg == False and event.type == pg.MOUSEBUTTONDOWN:  # узнаем по каким попали и сколько раз нажали
-            but.exam(butnum)
+            but.exam(butnum) #speed = n
             but.rgp += 1
         if but.rgp == butnum:  # как только нажали 5 раз, красим в красный оставшийся и выводим время, чутка ждем и очищаем
             but.rg = True
-            but.colred(butnum)
-            but.times(screen, font)
-            time.sleep(3)
-            but.kill(screen,butnum)
+            but.colred(butnum) #speed = n
+            but.times(screen, font) #speed = n
+            pg.time.delay(2000)
+            but.kill(screen,butnum) #speed = n

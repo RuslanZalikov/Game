@@ -10,13 +10,13 @@ white = (255, 255, 255)
 green = (0, 255, 0)
 red = (255, 0, 0)
 
-window = Tk()
-window.title("Добро пожаловать!")
+#window = Tk()
+#window.title("Добро пожаловать!")
 
-setting = Setting(window)
-setting.Buttons()
+#setting = Setting(window)
+#setting.Buttons()
 
-def run():
+def run(): #speed = 5n + n**2
     pg.init()
     screen = pg.display.set_mode((640, 560))
     screen.fill(black)
@@ -28,8 +28,8 @@ def run():
 
     while True:
         pg.display.update()
-        Events(screen, but, butnum, font)
-        but.update(screen, butnum)
+        Events(screen, but, butnum, font) #speed = 5n
+        but.update(screen, butnum) #speed = n**2
 
 
 run()

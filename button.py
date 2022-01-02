@@ -1,5 +1,5 @@
 import pygame as pg
-from random import randint
+from random import randint, choice
 import time
 
 white = (255, 255, 255)
@@ -7,7 +7,7 @@ black = (0, 0, 0)
 red = (255, 0, 0)
 green = (0, 255, 0)
 
-class ButtonPG:
+class ButtonPG: # speed = 1
     def __init__(self, screen):
         self.screen = screen
         self.screen_rect = screen.get_rect()
@@ -30,60 +30,46 @@ class ButtonPG:
         for i in range():
             self.boom[i] = pg.image.load(self.boom[i])
             self.boom[i] = self.boom[i].get_rect()"""
-    def draw(self, butnum): #функция для рисования 5 точек и проверка чтобы не накладывались
+    def draw(self, butnum): #функция для рисования 5 точек и проверка чтобы не накладывались #speed = 2n
         self.flag.clear()
-        for i in range(butnum):
-            self.pos.insert(i, [-50, -50])#координаты точек
-            self.ftime.insert(i, [-50, -50]) #временный список чтобы проверять накладку точек друг на друга
+        for i in range(butnum): #speed = n
+            self.pos.insert(i, [randint(i*(640//butnum) + 50, (i+1)*(640//butnum) - 50), randint(50,310)])#координаты точек
             self.direction.insert(i, [randint(-1, 1), randint(-1, 1)])
+            if self.direction[i] == [0,0]:
+                self.direction.insert(i, [randint(-1, 1), randint(-1, 1)])
             self.flag.insert(i, False) #если true то попал
         self.start = time.time()
-        z = 0
-        n = butnum**2
-        while z < n: #проверка накладности, точек 5 и при проверке каждой с каждой 5**2 = 25
-            for k in range(butnum):
-                l = [randint(50, 590), randint(50, 310)]
-                self.ftime[k] = l
-            for k in range(butnum):
-                for j in range(butnum):
-                    if (self.ftime[k][0] - self.ftime[j][0])**2 + (self.ftime[k][1] - self.ftime[j][1])**2 > 10000 or (self.ftime[k][0] - self.ftime[j][0])**2 + (self.ftime[k][1] - self.ftime[j][1])**2 == 0:
-                        z += 1
-                    else:
-                        z = 0
-        self.pos = self.ftime
-        for i in range(butnum): #рисуем 5 белых точек
+        for i in range(butnum): #рисуем 5 белых точек #speed = n
             self.image_rect.center = self.pos[i]
             self.screen.blit(self.image, self.image_rect)
             pg.display.update()
-    def exam(self, butnum): #проверка на попадание
-        for i in range(butnum): #после нажатия проверят каждую точку, попал ли
+    def exam(self, butnum): #проверка на попадание speed = n
+        for i in range(butnum): #после нажатия проверят каждую точку, попал ли speed = n
             r = (pg.mouse.get_pos()[0] - self.pos[i][0])**2 + (pg.mouse.get_pos()[1] - self.pos[i][1])**2
             if r <= 2500:
                 self.flag[i] = True
                 self.image2_rect.center = self.pos[i]
                 self.screen.blit(self.image2, self.image2_rect)
                 pg.display.update()
-                self.pos[i] = [-10000, -10000]
+                self.pos[i] = [ -10000, -10000]
         self.time = time.time() - self.start
-    def colred(self, butnum): #закрашивание всех непопавших точек в красный
+    def colred(self, butnum): #закрашивание всех непопавших точек в красный speed = n
         for i in range(butnum):
             if self.flag[i] == False:
                 self.image3_rect.center = self.pos[i]
                 self.screen.blit(self.image3, self.image3_rect)
         pg.display.update()
-    def kill(self, screen,butnum): #очищение
+    def kill(self, screen,butnum): #очищение #speed = n
         for i in range(butnum):
             pg.draw.circle(screen, black, self.pos[i], 50)
             self.pos[i] = [-10000, -10000]
         pg.display.update()
-    def times(self, screen, font): #вывод времени
+    def times(self, screen, font): #вывод времени #speed = n
         if False in self.flag:
             text = font.render("Lose: " + str(int(1000 * self.time)) + "ms", 1, white)
-            pg.display.update()
             print("Lose: ", int(1000 * self.time), "ms")
         else:
             text = font.render("Nice: " + str(int(1000 * self.time)) + "ms", 1, white)
-            pg.display.update()
             print("Nice: ", int(1000 * self.time), "ms")
         if self.y >= 530:
             self.x += 175
@@ -92,8 +78,9 @@ class ButtonPG:
             self.x = 15
             self.screen.fill(black)
         screen.blit(text, (self.x, self.y))
+        pg.display.update()
         self.y += 34
-    def update(self, screen, butnum): #обновление движения
+    def update(self, screen, butnum): #обновление движения #speed = n**2
         pg.draw.rect(screen, black, ((0,0), (640,360)))
         pg.draw.rect(screen, white, (0, 0, 640, 360), 1)
         pg.draw.rect(screen, white, (0, 360, 640, 200), 1)
