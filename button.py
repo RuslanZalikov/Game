@@ -1,5 +1,5 @@
 import pygame as pg
-from random import randint, choice
+from random import randint, randrange
 import time
 
 white = (255, 255, 255)
@@ -33,10 +33,8 @@ class ButtonPG: # speed = 1
     def draw(self, butnum): #функция для рисования 5 точек и проверка чтобы не накладывались #speed = 2n
         self.flag.clear()
         for i in range(butnum): #speed = n
-            self.pos.insert(i, [randint(i*(640//butnum) + 50, (i+1)*(640//butnum) - 50), randint(50,310)])#координаты точек
-            self.direction.insert(i, [randint(-1, 1), randint(-1, 1)])
-            if self.direction[i] == [0,0]:
-                self.direction.insert(i, [randint(-1, 1), randint(-1, 1)])
+            self.pos.insert(i, [randint(i*(640//butnum) + 50, (i+1)*(640//butnum) - 50), randint(50,310)])
+            self.direction.insert(i, [randrange(-1,1,2), randrange(-1,1,2)])
             self.flag.insert(i, False) #если true то попал
         self.start = time.time()
         for i in range(butnum): #рисуем 5 белых точек #speed = n
@@ -51,6 +49,7 @@ class ButtonPG: # speed = 1
                 self.image2_rect.center = self.pos[i]
                 self.screen.blit(self.image2, self.image2_rect)
                 pg.display.update()
+                pg.time.delay(200)
                 self.pos[i] = [ -10000, -10000]
         self.time = time.time() - self.start
     def colred(self, butnum): #закрашивание всех непопавших точек в красный speed = n
@@ -92,13 +91,15 @@ class ButtonPG: # speed = 1
                 self.direction[i][1] *= -1
             self.pos[i][0] += self.direction[i][0]
             self.pos[i][1] += self.direction[i][1]
-            for j in range(butnum): #проверка точек на пересечение друг с другом
+            j = i
+            while j < butnum: #проверка точек на пересечение друг с другом
                 r = (self.pos[i][0] - self.pos[j][0]) ** 2 + (self.pos[i][1] - self.pos[j][1]) ** 2
                 if r <= 10000 and r != 0:
                     self.direction[i][0] *= -1
                     self.direction[i][1] *= -1
                     self.direction[j][0] *= -1
                     self.direction[j][1] *= -1
+                j += 1
             self.pos[i][0] += self.direction[i][0]
             self.pos[i][1] += self.direction[i][1]
             self.image_rect.center = self.pos[i]
