@@ -30,17 +30,16 @@ class ButtonPG: # speed = 1
         for i in range():
             self.boom[i] = pg.image.load(self.boom[i])
             self.boom[i] = self.boom[i].get_rect()"""
-    def draw(self, butnum): #функция для рисования 5 точек и проверка чтобы не накладывались #speed = 2n
+    def draw(self, butnum): #функция для рисования 5 точек и проверка чтобы не накладывались #speed = n
         self.flag.clear()
         for i in range(butnum): #speed = n
             self.pos.insert(i, [randint(i*(640//butnum) + 50, (i+1)*(640//butnum) - 50), randint(50,310)])
             self.direction.insert(i, [randrange(-1,1,2), randrange(-1,1,2)])
-            self.flag.insert(i, False) #если true то попал
-        self.start = time.time()
-        for i in range(butnum): #рисуем 5 белых точек #speed = n
+            self.flag.insert(i, False)
             self.image_rect.center = self.pos[i]
             self.screen.blit(self.image, self.image_rect)
             pg.display.update()
+        self.start = time.time()
     def exam(self, butnum): #проверка на попадание speed = n
         for i in range(butnum): #после нажатия проверят каждую точку, попал ли speed = n
             r = (pg.mouse.get_pos()[0] - self.pos[i][0])**2 + (pg.mouse.get_pos()[1] - self.pos[i][1])**2
@@ -91,7 +90,7 @@ class ButtonPG: # speed = 1
                 self.direction[i][1] *= -1
             self.pos[i][0] += self.direction[i][0]
             self.pos[i][1] += self.direction[i][1]
-            j = i
+            j = i + 1
             while j < butnum: #проверка точек на пересечение друг с другом
                 r = (self.pos[i][0] - self.pos[j][0]) ** 2 + (self.pos[i][1] - self.pos[j][1]) ** 2
                 if r <= 10000 and r != 0:
